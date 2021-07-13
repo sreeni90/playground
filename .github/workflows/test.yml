@@ -3,10 +3,10 @@ name: PHPUnit
 on:
   pull_request:
     branches:
-      - develop
+      - stage
   push:
     branches:
-      - develop
+      - stage
 
 jobs:
   main:
