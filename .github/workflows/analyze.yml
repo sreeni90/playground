@@ -5,7 +5,7 @@ name: PHPStan
 on:
   pull_request:
     branches:
-      - 'develop'
+      - 'stage'
     paths:
       - 'app/**'
       - 'tests/**'
@@ -14,7 +14,7 @@ on:
       - '.github/workflows/analyze.yml'
   push:
     branches:
-      - 'develop'
+      - 'stage'
     paths:
       - 'app/**'
       - 'tests/**'
