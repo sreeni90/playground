@@ -37,7 +37,7 @@ jobs:
        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
        
      - name: run commands on server
-       run: sshpass -p ${{ secrets.SSH_PWD }} ssh -tt root@${{ secrets.SSH_HOST }} && cd /var/www/html && pwd
+       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }} && cd /var/www/html && pwd
        
 
        
