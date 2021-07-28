@@ -37,7 +37,10 @@ jobs:
        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
        
      - name: run commands on server
-       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }} && cd /var/www/html && php spark migrate
+       run: sshpass -p ${{ secrets.SSH_PWD }} ssh -t root@${{ secrets.SSH_HOST }} << EOF
+            cd /var/www/html && php spark migrate
+            EOF
+            
        
 
        
