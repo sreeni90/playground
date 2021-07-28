@@ -27,17 +27,20 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }} 
         known_hosts: 'randomstringhostiureyqhfjkhkfjhfkjask'
         
-     - name: Creating key file
-       run: touch ~/.ssh/keyfile.pem && echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/keyfile.pem
-       
-     - name: change permissions for pem file
-       run: sudo chmod 400 ~/.ssh/keyfile.pem
+     #- name: Creating key file
+      # run: touch ~/.ssh/keyfile.pem && echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/keyfile.pem
+
+    # - name: change permissions for pem file
+     #  run: sudo chmod 400 ~/.ssh/keyfile.pem
     
      - name: Adding Known Hosts
        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
        
+     - name: install ssh pass
+       run: sudo apt-get install sshpass
+       
      - name: run test command
-       run: ssh -tt -i ~/.ssh/keyfile.pem root@${{ secrets.SSH_HOST }}
+       run: sshpass -p ${{ secrets.SSH_PWD}} ssh -tt root@${{ secrets.SSH_HOST }}
        
      - name: list of disks
        run: df -h
