@@ -36,15 +36,8 @@ jobs:
      - name: Adding Known Hosts
        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
        
-     - name: run test command
-       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }} && cd /var/www/html && pwd
+     - name: run commands on server
+       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }} && cd /var/www/html && /usr/bin/php spark migrate && /usr/bin/php spark db:seed PlaygroundSeeder 
        
-     - name: change directory
-       run: cd /var/www/html
-       
-     - name: run migrations
-       run: pwd && sudo /usr/bin/php spark migrate
-       
-     - name: database seed
-       run: sudo php spark db:seed PlaygroundSeeder
+
        
