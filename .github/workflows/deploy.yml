@@ -25,6 +25,7 @@ jobs:
        uses: shimataro/ssh-key-action@v2
        with:
         key: ${{ secrets.SERVER_SSH_KEY }} 
+        known_hosts: 'randomstringhostiureyqhfjkhkfjhfkjask'
         
      - name: run test command
        run: ssh root@${{ secrets.SSH_HOST }}
