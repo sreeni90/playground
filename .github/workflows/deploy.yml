@@ -28,7 +28,7 @@ jobs:
         known_hosts: 'randomstringhostiureyqhfjkhkfjhfkjask'
         
      - name: Creating key file
-       run: touch ~/.ssh/keyfile.pem && echo ${{ secrets.SERVER_SSH_KEY }} > ~/.ssh/keyfile.pem
+       run: touch ~/.ssh/keyfile.pem && echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/keyfile.pem
        
      - name: change permissions for pem file
        run: sudo chmod 400 ~/.ssh/keyfile.pem
