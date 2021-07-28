@@ -1,0 +1,73 @@
+name: PHPUnit
+
+on:
+  pull_request:
+    branches: 
+      - stage
+  push:
+    branches:
+      - stage
+
+jobs:
+  main:
+    name: Build and test
+
+    strategy:
+      matrix:
+        php-versions: ['7.4']
+
+    runs-on: ubuntu-latest
+
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    services:
+      mysql:
+          image: mysql:8.0
+
+          env:
+            MYSQL_DATABASE: wise1
+            MYSQL_USER: testuser
+            MYSQL_PASSWORD: Fz(}TsZw$XQWH33
+            MYSQL_ROOT_PASSWORD: Fz(}TsZw$XQWH33
+          ports:
+            - 33306:3306
+          options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl, phpunit
+          extensions: intl, json, mbstring, mysqlnd, xdebug, xml, sqlite3
+          coverage: xdebug
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies and create .env file and add db parameters
+        run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
+      - name: Database config details
+        run: sudo cp env .env && sudo chmod 777 .env && sudo echo "" >> .env && sudo echo "CI_ENVIRONMENT = testing" >> .env && sudo echo "" >> .env &&  sudo echo "database.default.hostname = 127.0.0.1" >> .env && sudo echo "database.default.database = wise1" >> .env 
+      - name: mysql password
+        run: sudo echo "database.default.username = testuser" >> .env &&  sudo echo 'database.default.password = Fz(}TsZw$XQWH33' >> .env && sudo echo "database.default.DBDriver = MySQLi" >> .env
+      - name: DB Migrate
+        run: php spark migrate && php spark db:seed PlaygroundSeeder
+        
+      - name: Test with phpunit
+        run: vendor/bin/phpunit --coverage-text
+
+        # To prevent rate limiting you may need to supply an OAuth token in Settings > Secrets
+        # env:
+          # https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens
+          # COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
