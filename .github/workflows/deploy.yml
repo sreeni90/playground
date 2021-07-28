@@ -37,7 +37,7 @@ jobs:
        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
        
      - name: run test command
-       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }}
+       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }} && cd /var/www/html && pwd
        
      - name: change directory
        run: cd /var/www/html
