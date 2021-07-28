@@ -1,4 +1,4 @@
-name: PHPUnit
+name: Testing
 
 on:
   pull_request:
