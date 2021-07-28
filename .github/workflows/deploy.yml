@@ -40,7 +40,7 @@ jobs:
        run: sudo apt-get install sshpass
        
      - name: run test command
-       run: sshpass -p ${{ secrets.SSH_PWD}} ssh -tt root@${{ secrets.SSH_HOST }}
+       run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }}
        
      - name: list of disks
        run: df -h
