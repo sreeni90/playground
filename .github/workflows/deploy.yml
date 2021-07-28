@@ -43,8 +43,8 @@ jobs:
        run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }}
        
      - name: migrate database
-       run: cd /var/www/html && php spark migrate
+       run: cd /var/www/html && /usr/bin/php spark migrate
        
      - name: database seed
-       run: php spark db:seed PlaygroundSeeder
+       run: /usr/bin/php spark db:seed PlaygroundSeeder
        
