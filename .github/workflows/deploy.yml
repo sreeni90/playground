@@ -44,9 +44,10 @@ jobs:
        
      - name: change directory
        run: cd /var/www/html
+       
      - name: run migrations
-       run: php spark migrate
+       run: sudo php spark migrate
        
      - name: database seed
-       run: /usr/bin/php spark db:seed PlaygroundSeeder
+       run: sudo php spark db:seed PlaygroundSeeder
        
