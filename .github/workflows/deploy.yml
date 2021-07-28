@@ -42,5 +42,9 @@ jobs:
      - name: run test command
        run: sshpass -p ${{ secrets.SSH_PWD }} ssh root@${{ secrets.SSH_HOST }}
        
-     - name: list of disks
-       run: df -h
+     - name: migrate database
+       run: cd /var/www/html && php spark migrate
+       
+     - name: database seed
+       run: php spark db:seed PlaygroundSeeder
+       
