@@ -39,7 +39,6 @@ jobs:
      - name: run commands on server
        run: sshpass -p ${{ secrets.SSH_PWD }} ssh -t root@${{ secrets.SSH_HOST }} << EOF
             cd /var/www/html && php spark migrate
-            EOF
             
        
 
